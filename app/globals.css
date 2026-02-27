@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  color-scheme: dark;
+}
+
+/* ── Leaflet dark theme overrides ─────────────────────────────────────────── */
+
+/* Map background matches app background */
+.leaflet-container {
+  background: #030712 !important;
+}
+
+/* Zoom control */
+.leaflet-control-zoom a {
+  background: #0f172a !important;
+  border-color: #334155 !important;
+  color: #94a3b8 !important;
+}
+.leaflet-control-zoom a:hover {
+  background: #1e293b !important;
+  color: #f1f5f9 !important;
+}
+.leaflet-bar {
+  border: 1px solid #334155 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6) !important;
+}
+
+/* Attribution strip */
+.leaflet-control-attribution {
+  background: rgba(3,7,18,0.75) !important;
+  color: #475569 !important;
+  font-size: 10px !important;
+  backdrop-filter: blur(4px);
+}
+.leaflet-control-attribution a {
+  color: #64748b !important;
+}
+
+/* Custom tooltip for node hover */
+.nycnexus-tooltip {
+  background: #0f172a !important;
+  border: 1px solid #334155 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.6) !important;
+  padding: 6px 10px !important;
+  color: #f1f5f9 !important;
+}
+/* Remove the default white arrow/tip */
+.nycnexus-tooltip::before {
+  display: none !important;
+}
