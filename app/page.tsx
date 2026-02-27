@@ -376,7 +376,7 @@ export default function Page() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-2">
-              <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-blue-400" />
+              <span className="inline-block h-2 w-2 rounded-full bg-blue-400" />
               <span className="text-lg font-bold tracking-tight text-white">
                 NYC <span className="text-blue-400">Nexus</span>
               </span>
@@ -487,10 +487,6 @@ export default function Page() {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               linkColor={(link: any) => (link as GraphLink).color}
               linkWidth={0.8}
-              linkDirectionalParticles={2}
-              linkDirectionalParticleWidth={1.3}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              linkDirectionalParticleColor={(link: any) => (link as GraphLink).color}
               // Interaction
               onNodeClick={handleNodeClick}
               onBackgroundClick={handleBgClick}
