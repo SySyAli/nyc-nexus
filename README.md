@@ -110,34 +110,16 @@ distance(Hotel, Attraction) ≤ 500 m  →  WALKABLE_TO edge     (amber)
 
 The force-directed canvas renders the populated entity network. Node radius scales with degree centrality so high-connectivity hubs are visually prominent. Directional particles animate along edges to show relationship direction.
 
-### 5. Enterprise AI / ML Integration
+### 5. Query Engine & Graph Traversal
 
-The graph structure feeds directly into downstream ML pipelines:
+The knowledge graph enables sophisticated multi-hop queries across the semantic network:
 
-- **Dynamic pricing** — node centrality and neighbourhood features as input signals for room rate models sensitive to real-time event proximity
-- **Guest itinerary recommendation** — graph traversal over WALKABLE_TO / TRANSIT_ACCESS edges with graph-structured context fed to LLMs to prevent hallucination
+- **Spatial queries** — find all hotels reachable via subway within 2 hops, or all attractions walkable from a given property
+- **Relationship reasoning** — traverse TRANSIT_ACCESS and WALKABLE_TO edges to compute guest accessibility scores, informing property positioning and amenity investment decisions
+- **Real-time aggregation** — query engine surfaces contextual signals (transit density, attraction proximity) that feed into dynamic pricing models and operational dashboards
 
 ---
 
 ## Data Source
 
-All geographic data is fetched at runtime from the [Overpass API](https://overpass-api.de), which serves OpenStreetMap data under the [ODbL license](https://opendatacommons.org/licenses/odbl/).
-
-The bounding box covers Manhattan from Battery Park to 59th Street:
-
-```
-South: 40.7000°N  West: 74.0200°W
-North: 40.7680°N  East: 73.9700°W
-```
-
-The query uses `out center;` so that OSM *ways* (building footprints) are also included alongside point *nodes*, giving a more complete hotel and museum dataset.
-
----
-
-## Node Color Reference
-
-| Type | Color | Hex |
-|------|-------|-----|
-| Hotel | Blue | `#3B82F6` |
-| Subway Station | Green | `#10B981` |
-| Attraction | Amber | `#F59E0B` |
+All geographic data is fetched at runtime from the [Overpass API](https://overpass-api.de), which serves OpenStreetMap data under the [ODbL license](https://opendatacommons.org/licenses/odbl/). The bounding box covers Midtown Manhattan.

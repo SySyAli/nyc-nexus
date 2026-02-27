@@ -9,7 +9,8 @@
       "Bash(cd /c/Users/syeda/OneDrive/Documents/cs_adventures/nyc-nexus && npx next build 2>&1)",
       "WebSearch",
       "Bash(cd /c/Users/syeda/OneDrive/Documents/cs_adventures/nyc-nexus && npm install leaflet react-leaflet @types/leaflet 2>&1)",
-      "Bash(cd /c/Users/syeda/OneDrive/Documents/cs_adventures/nyc-nexus && npm install leaflet react-leaflet@4 @types/leaflet 2>&1)"
+      "Bash(cd /c/Users/syeda/OneDrive/Documents/cs_adventures/nyc-nexus && npm install leaflet react-leaflet@4 @types/leaflet 2>&1)",
+      "Bash(echo EXIT:$?:*)"
     ]
   }
 }
