@@ -128,19 +128,23 @@ export default function MapView({
       {/* ── Node CircleMarkers ──────────────────────────────────────────────── */}
       {nodes.map((node) => {
         const isSelected = selectedNode?.id === node.id;
-        // Radius scales with degree centrality so hub nodes are unmistakably larger
-        const radius = 5 + Math.min(node.degree * 1.5, 16);
+        // All nodes share the same radius. Degree is encoded as border thickness:
+        // a thin ring (1 px) for isolated nodes, a thick ring (up to 7 px) for hubs.
+        const RADIUS  = 8;
+        const ringW   = isSelected ? 2.5 : 1 + Math.min(node.degree * 0.65, 6);
+        const ringColor = isSelected ? '#FFFFFF' : node.color;
 
         return (
           <CircleMarker
             key={node.id}
             center={[node.lat, node.lon]}
-            radius={radius}
+            radius={RADIUS}
             pathOptions={{
-              color:       isSelected ? '#FFFFFF' : node.color,
+              color:       ringColor,
               fillColor:   node.color,
               fillOpacity: 0.88,
-              weight:      isSelected ? 2 : 1,
+              weight:      ringW,
+              opacity:     isSelected ? 1 : 0.85,
             }}
             eventHandlers={{
               click: () => onNodeSelect(isSelected ? null : node),
@@ -149,7 +153,7 @@ export default function MapView({
             <Tooltip
               className="nycnexus-tooltip"
               direction="top"
-              offset={[0, -(radius + 4)]}
+              offset={[0, -(RADIUS + 4)]}
               permanent={false}
             >
               <span style={{

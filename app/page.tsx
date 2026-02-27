@@ -297,17 +297,18 @@ export default function Page() {
     (node: any, ctx: CanvasRenderingContext2D, globalScale: number) => {
       const n          = node as GraphNode & { x: number; y: number };
       const isSelected = selected?.id === n.id;
-      // Radius scales aggressively with degree so highly-connected hubs
-      // are unmistakably larger than isolated nodes.
-      const r = 4 + Math.min((n.degree ?? 0) * 1.8, 20);
+      // All nodes share the same radius — degree is shown as a number badge inside.
+      const BASE_R = 7;
 
+      // Selected-state glow
       if (isSelected) {
         ctx.shadowColor = n.color;
         ctx.shadowBlur  = 20;
       }
 
+      // Core circle — uniform size
       ctx.beginPath();
-      ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, BASE_R, 0, Math.PI * 2);
       ctx.fillStyle = n.color;
       ctx.fill();
 
@@ -318,7 +319,18 @@ export default function Page() {
         ctx.shadowBlur  = 0;
       }
 
-      // Labels appear when the user zooms in or selects a node
+      // Degree count badge — white number centered inside the node.
+      // Font size scales inversely with zoom so the badge is always legible.
+      if (n.degree > 0) {
+        const fs = Math.max(4, 9 / globalScale);
+        ctx.font         = `bold ${fs}px ui-monospace, monospace`;
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle    = 'rgba(255,255,255,0.92)';
+        ctx.fillText(String(n.degree), n.x, n.y);
+      }
+
+      // Name label below node — visible when zoomed in or selected
       if (globalScale >= 2.3 || isSelected) {
         const raw   = n.name;
         const label = raw.length > 24 ? raw.slice(0, 24) + '…' : raw;
@@ -327,7 +339,7 @@ export default function Page() {
         ctx.textAlign    = 'center';
         ctx.textBaseline = 'top';
         ctx.fillStyle    = '#CBD5E1';
-        ctx.fillText(label, n.x, n.y + r + 1.5);
+        ctx.fillText(label, n.x, n.y + BASE_R + 1.5);
       }
     },
     [selected],
