@@ -477,12 +477,12 @@ export default function Page() {
   return (
     <main className="flex h-screen flex-col bg-[#030712] text-slate-100 antialiased">
 
-      {/* ══ HEADER ══════════════════════════════════════════════════════════ */}
+      {/* ══ HEADER (brand · tabs · controls) ═══════════════════════════════ */}
       <header className="shrink-0 border-b border-slate-800/70 bg-[#030712]/95 backdrop-blur-md">
-        <div className="mx-auto flex max-w-screen-2xl items-center justify-between gap-4 px-5 py-3 md:px-8">
+        <div className="mx-auto flex max-w-screen-2xl items-center gap-4 px-5 py-3 md:px-8">
 
           {/* Brand */}
-          <div>
+          <div className="shrink-0">
             <div className="flex items-center gap-2">
               <span className="inline-block h-2 w-2 rounded-full bg-blue-400" />
               <span className="text-lg font-bold tracking-tight text-white">
@@ -492,26 +492,43 @@ export default function Page() {
             <p className="pl-4 text-[10px] text-slate-500">Real-Time Semantic Knowledge Graph · Manhattan</p>
           </div>
 
-          {/* View toggle — only relevant on the Visualization tab */}
-          {activeTab === 'viz' && (
-            <div className="flex rounded-lg border border-slate-700 bg-slate-900 p-0.5">
+          {/* ── Main tabs ── */}
+          <div className="flex flex-1 items-center justify-center gap-1">
+            {TABS.map(({ key, label, Icon }) => (
               <button
-                onClick={() => setView('graph')}
-                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${view === 'graph' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+                key={key}
+                onClick={() => setActiveTab(key)}
+                className={`flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-medium transition-colors ${
+                  activeTab === key
+                    ? 'bg-slate-800 text-white'
+                    : 'text-slate-500 hover:text-slate-300'
+                }`}
               >
-                <Network size={12} /> Force Graph
+                <Icon size={13} />
+                {label}
               </button>
-              <button
-                onClick={() => setView('map')}
-                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${view === 'map' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
-              >
-                <MapIcon size={12} /> Map View
-              </button>
-            </div>
-          )}
+            ))}
+          </div>
 
-          {/* Legend + live badge */}
-          <div className="flex flex-wrap items-center justify-end gap-3">
+          {/* ── Right side: view toggle (viz only) · legend · badge ── */}
+          <div className="flex shrink-0 items-center gap-3">
+            {activeTab === 'viz' && (
+              <div className="flex rounded-lg border border-slate-700 bg-slate-900 p-0.5">
+                <button
+                  onClick={() => setView('graph')}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${view === 'graph' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+                >
+                  <Network size={12} /> Force Graph
+                </button>
+                <button
+                  onClick={() => setView('map')}
+                  className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${view === 'map' ? 'bg-blue-600 text-white shadow-sm' : 'text-slate-400 hover:text-slate-200'}`}
+                >
+                  <MapIcon size={12} /> Map View
+                </button>
+              </div>
+            )}
+
             {([
               { type: NodeType.Hotel,      label: 'Hotel' },
               { type: NodeType.Subway,     label: 'Subway' },
@@ -522,6 +539,7 @@ export default function Page() {
                 <span className="text-xs text-slate-400">{label}</span>
               </div>
             ))}
+
             {!loading && !error && (
               <span className="rounded-full border border-emerald-700/50 bg-emerald-950/50 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-400">
                 ● LIVE &nbsp;{graphData.nodes.length} nodes · {graphData.links.length} edges
@@ -530,26 +548,6 @@ export default function Page() {
           </div>
         </div>
       </header>
-
-      {/* ══ TAB BAR ═════════════════════════════════════════════════════════ */}
-      <nav className="shrink-0 border-b border-slate-800 bg-[#030712]/95">
-        <div className="mx-auto flex max-w-screen-2xl px-5 md:px-8">
-          {TABS.map(({ key, label, Icon }) => (
-            <button
-              key={key}
-              onClick={() => setActiveTab(key)}
-              className={`flex items-center gap-2 border-b-2 px-5 py-3 text-[13px] font-medium transition-colors ${
-                activeTab === key
-                  ? 'border-blue-500 text-white'
-                  : 'border-transparent text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              <Icon size={13} />
-              {label}
-            </button>
-          ))}
-        </div>
-      </nav>
 
       {/* ══ CONTENT AREA (flex-1, fills remaining height) ═══════════════════ */}
       <div className="relative flex-1 overflow-hidden">
@@ -841,7 +839,6 @@ export default function Page() {
                     <div className="pointer-events-none absolute -bottom-4 -right-2 select-none text-8xl font-black opacity-[0.04]" style={{ color: card.accent }}>
                       {card.num}
                     </div>
-                    <div className="mb-4 text-3xl">{card.icon}</div>
                     <p className="mb-1.5 text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: card.accent }}>
                       {card.num} / {card.tag}
                     </p>
