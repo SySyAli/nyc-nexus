@@ -319,11 +319,11 @@ interface ArchCard { num: string; tag: string; title: string; icon: string; acce
 const ARCH_CARDS: ArchCard[] = [
   {
     num: '01', tag: 'DATA TAXONOMY', title: 'Organizing the Chaos', icon: '🗂️', accent: '#3B82F6',
-    body: 'Before building the graph we classified every raw OSM point into a strict spatial hierarchy: Infrastructure → Transit → Subway, and Commercial → Hospitality → Hotel. This parent-child taxonomy standardizes enterprise search and guarantees every ingested entity has an unambiguous position in the system\'s ontological tree — a prerequisite for scalable data governance.',
+    body: 'Before building the graph we classified every raw OSM point into a strict spatial hierarchy: Infrastructure → Transit → Subway, and Commercial → Hospitality → Hotel. This parent-child taxonomy standardizes enterprise search and guarantees every ingested entity has an unambiguous position in the system\'s ontological tree - a prerequisite for scalable data governance.',
   },
   {
     num: '02', tag: 'DATA MODEL', title: 'Enforcing State & Structure', icon: '🏗️', accent: '#8B5CF6',
-    body: 'Encoded as strict TypeScript interfaces, the Data Model is the database blueprint. It enforces that every entity carries a unique OSM ID, precise WGS84 lat/lon coordinates, and a validated NodeType enum before entering system state — making it structurally impossible to persist a malformed entity. Degree centrality is pre-computed and stored on each node.',
+    body: 'Encoded as strict TypeScript interfaces, the Data Model is the database blueprint. It enforces that every entity carries a unique OSM ID, precise WGS84 lat/lon coordinates, and a validated NodeType enum before entering system state - making it structurally impossible to persist a malformed entity. Degree centrality is pre-computed and stored on each node.',
   },
   {
     num: '03', tag: 'DATA ONTOLOGY', title: 'Defining Semantic Rules', icon: '🔗', accent: '#10B981',
@@ -331,11 +331,11 @@ const ARCH_CARDS: ArchCard[] = [
   },
   {
     num: '04', tag: 'KNOWLEDGE GRAPH', title: 'The Populated Network', icon: '🌐', accent: '#F59E0B',
-    body: 'The force-directed graph is the Knowledge Graph in action — connecting specific real-world entities based purely on ontology rules applied to geographic coordinates. Flat relational tables become a multi-hop relationship web, enabling traversal queries (shortest path, neighbourhood expansion) that are impossible in SQL.',
+    body: 'The force-directed graph is the Knowledge Graph in action - connecting specific real-world entities based purely on ontology rules applied to geographic coordinates. Flat relational tables become a multi-hop relationship web, enabling traversal queries (shortest path, neighbourhood expansion) that are impossible in SQL.',
   },
   {
     num: '05', tag: 'ENTERPRISE AI / ML', title: 'Future-Proofing for Oracle', icon: '🤖', accent: '#EF4444',
-    body: 'At Oracle scale this graph feeds ML pipelines directly. Node centrality powers dynamic room pricing based on proximity to live events, graph traversal powers personalized itinerary engines, and graph-structured context fed into LLMs prevents hallucination in AI concierge systems — making the graph the semantic grounding layer for the entire hospitality stack.',
+    body: 'At Oracle scale this graph feeds ML pipelines directly. Node centrality powers dynamic room pricing based on proximity to live events, graph traversal powers personalized itinerary engines, and graph-structured context fed into LLMs prevents hallucination in AI concierge systems - making the graph the semantic grounding layer for the entire hospitality stack.',
   },
 ];
 
@@ -552,9 +552,8 @@ export default function Page() {
       {/* ══ CONTENT AREA (flex-1, fills remaining height) ═══════════════════ */}
       <div className="relative flex-1 overflow-hidden">
 
-        {/* ── VISUALIZATION TAB ──────────────────────────────────────────── */}
-        {activeTab === 'viz' && (
-          <div ref={containerRef} className="absolute inset-0">
+        {/* ── VISUALIZATION TAB — always mounted so ForceGraph2D keeps its state ── */}
+        <div ref={containerRef} className={`absolute inset-0 ${activeTab !== 'viz' ? 'hidden' : ''}`}>
 
             {/* Loading */}
             {loading && (
@@ -689,12 +688,10 @@ export default function Page() {
                 </span>
               </div>
             )}
-          </div>
-        )}
+        </div>
 
-        {/* ── QUERY ENGINE TAB ───────────────────────────────────────────── */}
-        {activeTab === 'query' && (
-          <div className="h-full overflow-y-auto">
+        {/* ── QUERY ENGINE TAB — always mounted ──────────────────────────── */}
+        <div className={`h-full overflow-y-auto ${activeTab !== 'query' ? 'hidden' : ''}`}>
             <div className="mx-auto max-w-screen-2xl px-5 py-10 md:px-8">
 
               {/* Header */}
@@ -812,12 +809,10 @@ export default function Page() {
                 </>
               )}
             </div>
-          </div>
-        )}
+        </div>
 
-        {/* ── ARCHITECTURE TAB ───────────────────────────────────────────── */}
-        {activeTab === 'arch' && (
-          <div className="h-full overflow-y-auto">
+        {/* ── ARCHITECTURE TAB — always mounted ──────────────────────────── */}
+        <div className={`h-full overflow-y-auto ${activeTab !== 'arch' ? 'hidden' : ''}`}>
             <div className="mx-auto max-w-screen-2xl px-5 py-10 md:px-8">
               <div className="mb-10">
                 <p className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-blue-400">System Architecture Breakdown</p>
@@ -852,8 +847,7 @@ export default function Page() {
                 <p>Data © OpenStreetMap contributors · Overpass API (overpass-api.de) · Built for Oracle Hospitality Engineering Demo</p>
               </div>
             </div>
-          </div>
-        )}
+        </div>
 
       </div>{/* /content area */}
     </main>
